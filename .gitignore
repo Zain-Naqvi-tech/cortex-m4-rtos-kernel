@@ -1,0 +1,18 @@
+# Keil Build Artifacts
+Objects/
+Listings/
+*.o
+*.d
+*.crf
+*.htm
+*.map
+*.dep
+*.hex
+*.axf
+*.lnp
+*.sct
+
+# Keil User-Specific Configuration (Keep .uvprojx, ignore the rest)
+*.uvoptx
+*.uvguix.*
+*.scvd
