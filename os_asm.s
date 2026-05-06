@@ -1,16 +1,20 @@
 ;SVC Handler
 ;We need to perform an EXC_RETURN
+;PendSV Context Switcher
 
-AREA os_asm, CODE, READONLY
-THUMB
+	AREA os_asm, CODE, READONLY
+	THUMB
+		
+	IMPORT CurrentTask
+	IMPORT OS_Schedule
 
 ;Load LR with 0xFFFFFFFD (EXC_RETURN value)
-EXPORT SVC_Handler ;used by the linker so it can be used by other files
+	EXPORT SVC_Handler ;used by the linker so it can be used by other files
 SVC_Handler
 	LDR LR, =0xFFFFFFFD
 	BX LR ;LSB is 1, the processor switches to Thumb State
 
-EXPORT PendSV_Handler
+	EXPORT PendSV_Handler
 PendSV_Handler
 
 	CPSID i ; Disable Interrupts
@@ -23,10 +27,11 @@ PendSV_Handler
 	LDR R1, [R1] ; R1 now holds the actual memory address of the active TCB Struct. Dereferences the address to CurrentTask
 	STR R0, [R1] ; Store R0 into offest 0 of the TCB (psp is the first field in the TCB struct)
 	
-	;BL will overwrite LR. We need to save LR somewhere before BL and restore it after. We can use the stack. The other option is to just use any of the approves AAPCS registers, which in this case would be R4-R11
+	;BL will overwrite LR. We need to save LR somewhere before BL and restore it after. We can use the stack. The other option is to just use any of the approved AAPCS registers, which in this case would be R4-R11
 	PUSH {LR}
 	BL OS_Schedule
 	POP {LR}
+	;In this case, we are using the MSP because Handler mode always uses MSP. 
 	
 	LDR R2, =CurrentTask ; Load Current Task
 	LDR R2, [R2] ; Dereference it 
@@ -38,7 +43,5 @@ PendSV_Handler
 	CPSIE i ; Enable Interrupts
 	BX LR ; Triggers EXC_RETURN, jumps to the new task's PC. 
 	
-	
-
-	
+	END
 	

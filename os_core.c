@@ -4,6 +4,10 @@
 
 #define INITIAL_XPSR 0x01000000 //xPSR - bit 24 must be set in order to avoid a hard fault. 
 
+TCB* CurrentTask = NULL; //Added after linker error
+
+TCB task_array[NUMBER_OF_TASKS]; //Added after linker error
+
 //Zeros out the psp's of every frame. NULLs out the currentTask pointer
 void Init_OS(void) {
 	
@@ -63,22 +67,14 @@ void Create_Task(uint8_t index, void (*task_function)(void)) {
 }
 
 //Launches the very first task. the CPU boots using MSP in privileged handler mode. Tasks need to run on the PSP in thread mode. This function allows that switch to happen
-//The CONTROL Register can help us in this. Bit 1 is the ASP - This bit reads 0 and ignores writes - Active Stack Pointer in handler mode. Bit 0 is Thread mode Privilege and Bit 2 is for floating-point Context Active (FPCA) (taken from TRM)
+//We are remaining on the MSP
 void Start_OS(void) {
 	//we point the current task pointer (tcb pointer type) to the first task (first element in the list of tasks)
 	CurrentTask = &task_array[0];
 	
 	//We need to load our first task's saved SP into the actual PSP register. we can use the CMSIS command __set_PSP(...)
 	//Assign a new value to the PSP register - the top address of a task's stack memory. 
-	__set_PSP((uint32_t)CurrentTask->psp);
-	
-	//Flip the CONTROL Register bit ONE to 1. 
-	uint32_t control_bit = __get_CONTROL();
-	control_bit = control_bit | 0x02; //0000 0010 (Bit 1 is set now)
-	__set_CONTROL(control_bit);
-	
-	//We need to flush the CPU pipeline - switch takes effect immediately
-	__ISB();
+	__set_PSP((uint32_t)(CurrentTask->psp + 8));
 	
 	//Now we need to jump into the first task
 	//We can't just call the first function 
@@ -88,5 +84,12 @@ void Start_OS(void) {
 	__asm("SVC #0");
 	
 	
+}
+
+//Advance CurrentTask to the next task in task_array, wrapping back to 0
+void OS_Schedule (void) {
+	uint32_t currentIndex = CurrentTask - task_array; //Pointer Subtraction to find the exact index of currentTask in task_array
+	uint32_t nextIndex = (currentIndex + 1) % NUMBER_OF_TASKS; //Finds the next index using Modulo Operator for wrap-around logic.
+	CurrentTask = &task_array[nextIndex]; 
 }
 

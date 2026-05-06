@@ -1,8 +1,9 @@
 //This file will be the core of the Operating System
 //We need to define a normal OS's features before going into real-time OS. 
+#ifndef OS_CORE_H
+#define OS_CORE_H
 
 #include <stdint.h>
-
 #define TASK_STACK_SIZE 100
 #define NUMBER_OF_TASKS 4
 
@@ -29,3 +30,6 @@ extern TCB task_array[NUMBER_OF_TASKS];
 void Init_OS(void);
 void Create_Task(uint8_t index, void (*task_function)(void)); //need to add WHAT task and WHICH slot to use 
 void Start_OS(void);
+void OS_Schedule(void); 
+
+#endif
