@@ -24,6 +24,6 @@ This project demonstrates core operating system concepts, including hardware exc
 5. The PendSV handler loads the new task's PSP, pops `R4-R11` off its stack, and triggers an Exception Return (`BX LR`).
 6. The CPU hardware automatically restores the remaining registers (`R0-R3`, `PC`, `LR`, `xPSR`) and resumes the new task exactly where it left off.
 
-## 🚧 Current Status & Next Steps
+## Current Status & Next Steps
 * **Status:** 4 tasks are currently running concurrently, toggling the 4 independent onboard LEDs at varying frequencies to demonstrate isolated CPU time-slicing.
 * **Next Milestone:** Replace the current busy-wait `volatile` delay loops with a proper `OS_Sleep()` API to introduce blocking states and improve CPU efficiency.
