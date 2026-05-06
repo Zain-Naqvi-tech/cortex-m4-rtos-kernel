@@ -26,4 +26,4 @@ This project demonstrates core operating system concepts, including hardware exc
 
 ## Current Status & Next Steps
 * **Status:** 4 tasks are currently running concurrently, toggling the 4 independent onboard LEDs at varying frequencies to demonstrate isolated CPU time-slicing.
-* **Next Milestone:** Replace the current busy-wait `volatile` delay loops with a proper `OS_Sleep()` API to introduce blocking states and improve CPU efficiency.
+* **Next Steps:** Replace the current busy-wait `volatile` delay loops with a proper `OS_Sleep()` function to introduce blocking states and improve CPU efficiency.
