@@ -67,7 +67,10 @@ void Create_Task(uint8_t index, void (*task_function)(void)) {
 }
 
 //Launches the very first task. the CPU boots using MSP in privileged handler mode. Tasks need to run on the PSP in thread mode. This function allows that switch to happen
-//We are remaining on the MSP
+/* We trick the CPU into jumping from the OS in Handler mode to the very first task in Thread mode. We remain
+on the MSP. If we trigger SVC, the CPU panics and pushes 8 registers onto whatever stack it is currently on. 
+Initially, we were switching to the PSP before SVC. Therefore, the CPU shoved garbage state of the Start_OS function on top
+of the task1 stack, destroying it. By remaining on the MSP, the CPU safely dumps that garbage data onto the main OS stack.*/
 void Start_OS(void) {
 	//we point the current task pointer (tcb pointer type) to the first task (first element in the list of tasks)
 	CurrentTask = &task_array[0];
