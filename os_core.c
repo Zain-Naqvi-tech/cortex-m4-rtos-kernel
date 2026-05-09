@@ -13,6 +13,7 @@ void Init_OS(void) {
 	
 	for (int i = 0; i < NUMBER_OF_TASKS; i++) {
 		task_array[i].psp = NULL;
+		task_array[i].state = READY;
 	}
 	CurrentTask = NULL; 
 	
@@ -59,10 +60,7 @@ void Create_Task(uint8_t index, void (*task_function)(void)) {
 		task_array[index].psp[i] = 0;
 	}		
 	
-	
-	
-	
-	
+	task_array[index].state = READY;
 	
 }
 
@@ -84,15 +82,30 @@ void Start_OS(void) {
 	//We need to trigger the same exception-return mechanism that PendSV will use every other time
 	//We want the CPU to pop that fake frame we built off the PSP
 	//We use Supervisor Call (SVC) to trigger this
-	__asm("SVC #0");
+	__asm("SVC #0"); //Triggers the SVC exception; the assembly handler will then force the switch to the PSP.
 	
 	
 }
 
 //Advance CurrentTask to the next task in task_array, wrapping back to 0
 void OS_Schedule (void) {
-	uint32_t currentIndex = CurrentTask - task_array; //Pointer Subtraction to find the exact index of currentTask in task_array
-	uint32_t nextIndex = (currentIndex + 1) % NUMBER_OF_TASKS; //Finds the next index using Modulo Operator for wrap-around logic.
-	CurrentTask = &task_array[nextIndex]; 
+	
+	uint32_t nextIndex;
+	uint32_t currentIndex;
+	
+	//Before picking the next task, the outgoing task should be READY
+	CurrentTask->state = READY; 
+	
+	currentIndex = CurrentTask - task_array; //Pointer Subtraction to find the exact index of currentTask in task_array
+	
+	for (int i = 1; i < NUMBER_OF_TASKS; i++) {
+		nextIndex = (currentIndex + i) % NUMBER_OF_TASKS; //Finds the next index using Modulo Operator for wrap-around logic.
+		if (task_array[nextIndex].state == READY) {
+			CurrentTask = &task_array[nextIndex];
+			CurrentTask->state = RUNNING;
+			break;
+		}
+	}
+	
 }
 

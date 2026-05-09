@@ -24,6 +24,7 @@ void SysTick_Init(void) {
 
 void SysTick_Handler(void) {
 	
+	//PendSV Set Pending
 	SCB->ICSR |= SCB_ICSR_PENDSVSET_Msk; //bit 28 of INTCTRL Register. Mask is 0x10000000
 	
 }

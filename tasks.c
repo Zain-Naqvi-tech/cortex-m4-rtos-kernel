@@ -22,7 +22,7 @@ void task3(void) { //Blinks LED3
 	volatile int i;
 	while (1) {
 		GPIO_PORTF_DATA_R ^= 0x10; //Toggle Fourth Bit for LED3
-		for (i = 0; i < 1000000; i++) {} //gets replaced by OS_Sleep()
+		for (i = 0; i < 3000000; i++) {} //gets replaced by OS_Sleep()
 	}
 }
 
@@ -30,6 +30,6 @@ void task4(void) { //Blinks LED4
 	volatile int i;
 	while (1) {
 		GPIO_PORTF_DATA_R ^= 0x01; //Toggle First Bit for LED4
-		for (i = 0; i < 5000000; i++) {} //gets replaced by OS_Sleep()
+		for (i = 0; i < 7000000; i++) {} //gets replaced by OS_Sleep()
 	}
 }

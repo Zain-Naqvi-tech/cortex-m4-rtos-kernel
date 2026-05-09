@@ -7,6 +7,15 @@
 #define TASK_STACK_SIZE 100
 #define NUMBER_OF_TASKS 4
 
+//STATES Enumeration
+typedef enum {
+		
+	READY, //0
+	RUNNING, //1
+	BLOCKED //2
+		
+} STATE; 
+
 //TASK CONTROL BLOCK STRUCT
 typedef struct {
 	
@@ -15,6 +24,9 @@ typedef struct {
 	
 	//stack array - physical chunk of RAM that this specific task will use to store its local variables and frozen registers. 
 	uint32_t tcb_array[TASK_STACK_SIZE];
+	
+	//State ENUM
+	STATE state; 
 	
 } TCB; //A task control block is a central place for the OS to remember exactly who this task is and what it was doing. 
 
