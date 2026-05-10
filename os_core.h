@@ -28,6 +28,9 @@ typedef struct {
 	//State ENUM
 	STATE state; 
 	
+	//Integer value for task priority
+	uint8_t priority;
+	
 } TCB; //A task control block is a central place for the OS to remember exactly who this task is and what it was doing. 
 
 //GLOBAL TRACKING VARIABLES
@@ -40,7 +43,7 @@ extern TCB task_array[NUMBER_OF_TASKS];
 
 //OS FUNCTIONS
 void Init_OS(void);
-void Create_Task(uint8_t index, void (*task_function)(void)); //need to add WHAT task and WHICH slot to use 
+void Create_Task(uint8_t index, void (*task_function)(void), uint8_t priority); //need to add WHAT task and WHICH slot to use 
 void Start_OS(void);
 void OS_Schedule(void); 
 

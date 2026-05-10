@@ -20,7 +20,7 @@ void Init_OS(void) {
 }
 
 //fake a stack frame so that when pendSV runs for the very first time and tries to restore a context, there's something valid to restore. 
-void Create_Task(uint8_t index, void (*task_function)(void)) {
+void Create_Task(uint8_t index, void (*task_function)(void), uint8_t priority) {
 
 	//find the top of stack - This is the last element of tcb_array
 	uint32_t* stackTop = &task_array[index].tcb_array[TASK_STACK_SIZE - 1];
@@ -62,6 +62,8 @@ void Create_Task(uint8_t index, void (*task_function)(void)) {
 	
 	task_array[index].state = READY;
 	
+	task_array[index].priority = priority; 
+	
 }
 
 //Launches the very first task. the CPU boots using MSP in privileged handler mode. Tasks need to run on the PSP in thread mode. This function allows that switch to happen
@@ -92,20 +94,29 @@ void OS_Schedule (void) {
 	
 	uint32_t nextIndex;
 	uint32_t currentIndex;
+	uint32_t indexTracker;
 	
 	//Before picking the next task, the outgoing task should be READY
-	CurrentTask->state = READY; 
+	if (CurrentTask->state == RUNNING) {
+		CurrentTask->state = READY;
+	}
 	
 	currentIndex = CurrentTask - task_array; //Pointer Subtraction to find the exact index of currentTask in task_array
 	
-	for (int i = 1; i < NUMBER_OF_TASKS; i++) {
+	indexTracker = currentIndex; 
+	
+	int8_t highest_priority_yet = -1;
+	
+	for (int i = 1; i <= NUMBER_OF_TASKS; i++) {
 		nextIndex = (currentIndex + i) % NUMBER_OF_TASKS; //Finds the next index using Modulo Operator for wrap-around logic.
-		if (task_array[nextIndex].state == READY) {
-			CurrentTask = &task_array[nextIndex];
-			CurrentTask->state = RUNNING;
-			break;
+		if (task_array[nextIndex].state == READY && task_array[nextIndex].priority > highest_priority_yet) {
+			highest_priority_yet = task_array[nextIndex].priority;
+			indexTracker = nextIndex;
 		}
 	}
+	
+	CurrentTask = &task_array[indexTracker]; //CurentTask now points to the next task in line
+	CurrentTask->state = RUNNING;
 	
 }
 
