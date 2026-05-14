@@ -33,10 +33,10 @@ int main(void) {
 	PortN_Init(); //Initializes Port N
 	PortF_Init(); //Initializes Port F
 	Init_OS(); //Zeros out the TCBs, and nulls the CurrentTask
-	Create_Task(0,task1); //Populate the fake stack for task 1
-	Create_Task(1,task2); //Populate the fake stack for task 2
-	Create_Task(2,task3); //Populate the fake stack for task 3
-	Create_Task(3,task4); //Populate the fake stack for task 4
+	Create_Task(0,task1,1); //Populate the fake stack for task 1
+	Create_Task(1,task2,2); //Populate the fake stack for task 2
+	Create_Task(2,task3,3); //Populate the fake stack for task 3
+	Create_Task(3,task4,4); //Populate the fake stack for task 4
 	SysTick_Init(); 
 	Start_OS();
 	
