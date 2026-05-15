@@ -21,4 +21,8 @@ typedef struct {
 	
 } Semaphore; 
 
+void OS_SemaphoreInit(Semaphore* smp);
+void OS_Wait(Semaphore* smp);
+void OS_Signal(Semaphore* smp);
+
 #endif

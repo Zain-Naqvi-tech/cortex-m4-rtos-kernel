@@ -424,6 +424,21 @@
               <FileType>5</FileType>
               <FilePath>.\tasks.h</FilePath>
             </File>
+            <File>
+              <FileName>Semaphore.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Semaphore.h</FilePath>
+            </File>
+            <File>
+              <FileName>Mutex.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Mutex.h</FilePath>
+            </File>
+            <File>
+              <FileName>Semaphore.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Semaphore.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
