@@ -1,20 +1,6 @@
 //Mutex Lock and Unlock features are included here
 
 #include "Mutex.h"
-#include "tm4c1294ncpdt.h"
-#include <stddef.h>
-#include "msp432e401y.h"
-
-void OS_Fault(void) {
-	
-		__disable_irq(); //Disable all interrupts
-		volatile int i; //volatile counter variable
-		while (1) {
-			GPIO_PORTN_DATA_R ^= 0x02; //Toggle Second Bit for LED1
-			for (i = 0; i < 1000000; i++) {} 
-		}
-	
-}
 
 void Mutex_Init(Mutex* Mx) {
 	Mx->counter = 1;

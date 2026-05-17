@@ -64,6 +64,8 @@ void Create_Task(uint8_t index, void (*task_function)(void), uint8_t priority) {
 	
 	task_array[index].priority = priority; 
 	
+	task_array[index].tcb_array[0] = 0xDEADBEEF; //Canary Value to check stack overflow
+	
 }
 
 //Launches the very first task. the CPU boots using MSP in privileged handler mode. Tasks need to run on the PSP in thread mode. This function allows that switch to happen

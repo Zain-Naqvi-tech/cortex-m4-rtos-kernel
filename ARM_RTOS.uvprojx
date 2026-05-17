@@ -439,6 +439,31 @@
               <FileType>1</FileType>
               <FilePath>.\Semaphore.c</FilePath>
             </File>
+            <File>
+              <FileName>Mutex.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Mutex.c</FilePath>
+            </File>
+            <File>
+              <FileName>os_malloc.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\os_malloc.h</FilePath>
+            </File>
+            <File>
+              <FileName>os_malloc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\os_malloc.c</FilePath>
+            </File>
+            <File>
+              <FileName>os_error.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\os_error.h</FilePath>
+            </File>
+            <File>
+              <FileName>os_error.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\os_error.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

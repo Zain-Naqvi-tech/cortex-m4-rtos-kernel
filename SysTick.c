@@ -1,9 +1,5 @@
 //SysTick.c
 #include "SysTick.h"
-#include "tm4c1294ncpdt.h"
-#include <stddef.h>
-#include "msp432e401y.h"
-
 
 void SysTick_Init(void) {
 	
@@ -23,6 +19,11 @@ void SysTick_Init(void) {
 }
 
 void SysTick_Handler(void) {
+	
+	//Checks the Canary value every 1ms
+	if (CurrentTask->tcb_array[0] != 0xDEADBEEF) {
+		
+	}
 	
 	//PendSV Set Pending
 	SCB->ICSR |= SCB_ICSR_PENDSVSET_Msk; //bit 28 of INTCTRL Register. Mask is 0x10000000

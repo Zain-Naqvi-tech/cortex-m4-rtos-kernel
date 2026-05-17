@@ -6,6 +6,10 @@
 #include <stdio.h>
 #include <stdint.h>
 #include "os_core.h"
+#include "os_error.h"
+#include "tm4c1294ncpdt.h"
+#include <stddef.h>
+#include "msp432e401y.h"
 
 //Mutex Struct
 typedef struct {
@@ -21,6 +25,5 @@ typedef struct {
 void Mutex_Init(Mutex* Mx);
 void Mutex_Lock(Mutex* Mx);
 void Mutex_Unlock(Mutex* Mx);
-void OS_Fault(void);
 
 #endif
