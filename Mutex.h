@@ -14,7 +14,13 @@ typedef struct {
 	uint8_t counter;
 	TCB* waiting_tasks[NUMBER_OF_TASKS];
 	uint8_t TaskTracker;
+	uint8_t OriginalPriority; 
 
 } Mutex;
+
+void Mutex_Init(Mutex* Mx);
+void Mutex_Lock(Mutex* Mx);
+void Mutex_Unlock(Mutex* Mx);
+void OS_Fault(void);
 
 #endif
