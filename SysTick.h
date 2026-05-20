@@ -7,6 +7,7 @@
 #include "msp432e401y.h"
 #include "os_core.h"
 #include <stdint.h>
+#include "os_error.h"
 // Initialize SysTick with busy wait running at bus clock.
 void SysTick_Init(void);
 

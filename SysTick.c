@@ -21,8 +21,10 @@ void SysTick_Init(void) {
 void SysTick_Handler(void) {
 	
 	//Checks the Canary value every 1ms
-	if (CurrentTask->tcb_array[0] != 0xDEADBEEF) {
-		
+	for (int i = 0; i < NUMBER_OF_TASKS; i++) {
+		if (task_array[i].tcb_array[0] != 0xDEADBEEF) {
+			OS_Fault();
+		}
 	}
 	
 	//PendSV Set Pending
