@@ -30,6 +30,9 @@ typedef struct {
 	
 	//Integer value for task priority
 	uint8_t priority;
+
+	//Sleep ticks used to track the cycles for which the task sleeps
+	uint32_t ticks;
 	
 } TCB; //A task control block is a central place for the OS to remember exactly who this task is and what it was doing. 
 
@@ -46,5 +49,6 @@ void Init_OS(void);
 void Create_Task(uint8_t index, void (*task_function)(void), uint8_t priority); //need to add WHAT task and WHICH slot to use 
 void Start_OS(void);
 void OS_Schedule(void); 
+void OS_Sleep(uint32_t ticks);
 
 #endif

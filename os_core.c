@@ -14,8 +14,9 @@ void Init_OS(void) {
 	for (int i = 0; i < NUMBER_OF_TASKS; i++) {
 		task_array[i].psp = NULL;
 		task_array[i].state = READY;
+		task_array[i].ticks = 0;
 	}
-	CurrentTask = NULL; 
+	CurrentTask = NULL;
 	
 }
 
@@ -120,5 +121,13 @@ void OS_Schedule (void) {
 	CurrentTask = &task_array[indexTracker]; //CurentTask now points to the next task in line
 	CurrentTask->state = RUNNING;
 	
+}
+
+void OS_Sleep(uint32_t ticks) {
+
+	CurrentTask->ticks = ticks;
+	CurrentTask->state = BLOCKED; //Blocks the task
+	SCB->ICSR |= SCB_ICSR_PENDSVSET_Msk; //bit 28 of INTCTRL Register. Mask is 0x10000000. Scheduler picks someone else
+
 }
 

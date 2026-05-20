@@ -25,6 +25,12 @@ void SysTick_Handler(void) {
 		if (task_array[i].tcb_array[0] != 0xDEADBEEF) {
 			OS_Fault();
 		}
+		if (task_array[i].state == BLOCKED && task_array[i].ticks > 0) { //If the task has ticks left AND is still BLOCKED, it means we need to continue pausing the task
+			task_array[i].ticks--;
+			if (task_array[i].ticks == 0) { //If the counter reaches zero, we know the timer has ended and we set its state to READY
+				task_array[i].state = READY;
+			}
+		}
 	}
 	
 	//PendSV Set Pending
