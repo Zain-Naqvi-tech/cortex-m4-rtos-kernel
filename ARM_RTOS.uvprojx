@@ -464,6 +464,16 @@
               <FileType>1</FileType>
               <FilePath>.\os_error.c</FilePath>
             </File>
+            <File>
+              <FileName>itm.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\itm.h</FilePath>
+            </File>
+            <File>
+              <FileName>itm.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\itm.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

@@ -5,7 +5,7 @@
 
 #include <stdint.h>
 #define TASK_STACK_SIZE 100
-#define NUMBER_OF_TASKS 4
+#define NUMBER_OF_TASKS 5
 
 //STATES Enumeration
 typedef enum {

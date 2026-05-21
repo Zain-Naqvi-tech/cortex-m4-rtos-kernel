@@ -4,6 +4,8 @@
 
 #define INITIAL_XPSR 0x01000000 //xPSR - bit 24 must be set in order to avoid a hard fault. 
 
+extern void idleTask(void);
+
 TCB* CurrentTask = NULL; //Added after linker error
 
 TCB task_array[NUMBER_OF_TASKS]; //Added after linker error
@@ -17,6 +19,8 @@ void Init_OS(void) {
 		task_array[i].ticks = 0;
 	}
 	CurrentTask = NULL;
+	
+	Create_Task(NUMBER_OF_TASKS - 1,idleTask,0);
 	
 }
 

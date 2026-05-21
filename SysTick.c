@@ -23,7 +23,7 @@ void SysTick_Handler(void) {
 	//Checks the Canary value every 1ms
 	for (int i = 0; i < NUMBER_OF_TASKS; i++) {
 		if (task_array[i].tcb_array[0] != 0xDEADBEEF) {
-			OS_Fault();
+			OS_Fault(); //Stack overflow
 		}
 		if (task_array[i].state == BLOCKED && task_array[i].ticks > 0) { //If the task has ticks left AND is still BLOCKED, it means we need to continue pausing the task
 			task_array[i].ticks--;

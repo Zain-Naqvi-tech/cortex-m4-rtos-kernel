@@ -6,4 +6,6 @@ void task2(void); //Blinks LED2
 void task3(void); //Blinks LED3
 void task4(void); //Blinks LED4
 
+void idleTask(void); //Idle task with lowest priority
+
 #endif
