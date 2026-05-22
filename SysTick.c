@@ -20,6 +20,8 @@ void SysTick_Init(void) {
 
 void SysTick_Handler(void) {
 	
+	OS_Ticks++; //timestamp for system ticks
+	
 	//Checks the Canary value every 1ms
 	for (int i = 0; i < NUMBER_OF_TASKS; i++) {
 		if (task_array[i].tcb_array[0] != 0xDEADBEEF) {
@@ -35,5 +37,5 @@ void SysTick_Handler(void) {
 	
 	//PendSV Set Pending
 	SCB->ICSR |= SCB_ICSR_PENDSVSET_Msk; //bit 28 of INTCTRL Register. Mask is 0x10000000
-	
+
 }

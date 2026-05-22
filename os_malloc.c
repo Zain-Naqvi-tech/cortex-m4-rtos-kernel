@@ -1,5 +1,6 @@
 
 #include "os_malloc.h"
+#include "itm.h"
 
 static uint8_t heap_array[HEAP_SIZE];
 
@@ -39,6 +40,8 @@ void* os_malloc(uint32_t size) {
 			}
 
 			Current->is_free = 0; //No longer free in memory
+			
+			ITM_Write(ITM_PACKET(ITM_EVT_MALLOC, CurrentTask - task_array, OS_Ticks));
 
 			return (void*)(Current + 1); //We return a pointer to the start of the payload
 		}
@@ -57,5 +60,6 @@ void os_free(void* data) {
 	Header* Current = data; //Current header pointer points to the allocated payload
 	Current = Current - 1; //We move back by a header
 	Current->is_free = 1; //We set the payload as free to use
+	ITM_Write(ITM_PACKET(ITM_EVT_FREE, CurrentTask - task_array, OS_Ticks));
 
 }

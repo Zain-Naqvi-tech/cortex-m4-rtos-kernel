@@ -7,6 +7,8 @@
 #define TASK_STACK_SIZE 100
 #define NUMBER_OF_TASKS 5
 
+extern volatile uint32_t OS_Ticks; //Timestamp for every packet
+
 //STATES Enumeration
 typedef enum {
 		

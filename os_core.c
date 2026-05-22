@@ -1,8 +1,11 @@
 #include "os_core.h"
 #include <stddef.h>
 #include "msp432e401y.h"
+#include "itm.h"
 
 #define INITIAL_XPSR 0x01000000 //xPSR - bit 24 must be set in order to avoid a hard fault. 
+
+volatile uint32_t OS_Ticks = 0; //Time Stamp for every data packet
 
 extern void idleTask(void);
 
@@ -125,6 +128,8 @@ void OS_Schedule (void) {
 	CurrentTask = &task_array[indexTracker]; //CurentTask now points to the next task in line
 	CurrentTask->state = RUNNING;
 	
+	ITM_Write(ITM_PACKET(ITM_EVT_TASK_SWITCH, indexTracker, OS_Ticks));
+
 }
 
 void OS_Sleep(uint32_t ticks) {

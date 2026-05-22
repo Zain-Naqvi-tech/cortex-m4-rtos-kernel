@@ -7,6 +7,7 @@
 #include "system_msp432e401y.h"
 
 // Packet Format: [31:24] event type (top 8 bits) | [23:16] task index (Next 8 bits) | [15:0] tick counter (Bottom 16 bits)
+#define ITM_PACKET(event, index, ticks) (((uint32_t)(event) << 24) | ((uint32_t)(index) << 16) | ((uint16_t)(ticks)))
 
 //The following definitions account for any task that our kernel might try to complete. 
 #define ITM_EVT_TASK_SWITCH   0x01 //Context Switch
