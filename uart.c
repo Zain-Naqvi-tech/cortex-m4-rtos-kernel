@@ -4,6 +4,8 @@
 #include <stdint.h>
 #include <stdio.h>
 
+static char printf_buffer[1023];
+
 void UART_Init(void) {
 	SYSCTL_RCGCUART_R |= 0x0001; // activate UART0 � 
 	SYSCTL_RCGCGPIO_R |= 0x0001; // activate port A � 
@@ -72,7 +74,8 @@ void UART_Trace(uint32_t Packet) {
     //Send out using Big-Endian format
     UART_OutChar((char)event);
     UART_OutChar((char)index);
-    UART_OutChar((char)timestamp);
+    UART_OutChar((char)((timestamp >> 8) & 0xFF)); //Send the higher byte of the timestamp
+    UART_OutChar((char)(timestamp & 0xFF)); //Send the lower byte of the timestamp
 
 }
 

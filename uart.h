@@ -14,7 +14,6 @@
 #define EVT_MALLOC        0x06
 #define EVT_FREE          0x07
 
-static char printf_buffer[1023];
 void UART_Init(void);
 
 // Wait for new input, then return ASCII code 
