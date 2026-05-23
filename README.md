@@ -93,3 +93,5 @@ Flash via Keil debugger over JTAG/SWD.
 | v3.0 — ITM trace + Gantt chart visualiser | In progress |
 
 Currently implementing ITM instrumentation and a Python-based real-time Gantt chart visualiser showing task execution, semaphore events, and malloc calls across time.
+
+For ITM trace, I Planned SWO trace output without first verifying if my debug probe has the functionality. CMSIS-DAP does not support SWO. Shifted to UART trace. It has the same packet format. Lesson: verify hardware capabilities before designing software around them. While it is tempting to jump straight into new architectural features, software design must always be grounded in the physical realities of the hardware toolchain
