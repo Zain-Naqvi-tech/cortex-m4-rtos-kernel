@@ -465,14 +465,14 @@
               <FilePath>.\os_error.c</FilePath>
             </File>
             <File>
-              <FileName>itm.h</FileName>
+              <FileName>uart.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\itm.h</FilePath>
+              <FilePath>.\uart.h</FilePath>
             </File>
             <File>
-              <FileName>itm.c</FileName>
+              <FileName>uart.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\itm.c</FilePath>
+              <FilePath>.\uart.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -1,7 +1,8 @@
 #include "os_core.h"
 #include <stddef.h>
 #include "msp432e401y.h"
-#include "itm.h"
+
+#include "uart.h"
 
 #define INITIAL_XPSR 0x01000000 //xPSR - bit 24 must be set in order to avoid a hard fault. 
 
@@ -128,7 +129,7 @@ void OS_Schedule (void) {
 	CurrentTask = &task_array[indexTracker]; //CurentTask now points to the next task in line
 	CurrentTask->state = RUNNING;
 	
-	ITM_Write(ITM_PACKET(ITM_EVT_TASK_SWITCH, indexTracker, OS_Ticks));
+	UART_Trace(UART_PACKET(EVT_TASK_SWITCH, indexTracker, OS_Ticks));
 
 }
 

@@ -4,6 +4,7 @@
 #include "tm4c1294ncpdt.h"
 #include "os_core.h"
 #include "tasks.h"
+#include "uart.h"
 
 void PortN_Init(void) {
 	
@@ -30,6 +31,7 @@ void PortF_Init(void) {
 int main(void) {
 
 	PLL_Init(); //Sets the clock speed at 120MHz
+	UART_Init();
 	PortN_Init(); //Initializes Port N
 	PortF_Init(); //Initializes Port F
 	Init_OS(); //Zeros out the TCBs, and nulls the CurrentTask
