@@ -51,7 +51,6 @@ void Mutex_Unlock(Mutex* Mx) { //Releasing the Mutex
 			TCB* WinnerTask = Mx->waiting_tasks[MaxPIndex];
 			WinnerTask->state = READY; //Wake the task at the index which had the highest priority task
 			UART_Trace(UART_PACKET(EVT_MUTEX_UNLOCK, CurrentTask - task_array, OS_Ticks));
-			SCB->ICSR |= SCB_ICSR_PENDSVSET_Msk; //bit 28 of INTCTRL Register. Mask is 0x10000000 - This allows for a context switch
 		
 			//Fill the hole
 			for (int j = MaxPIndex; j < Mx->TaskTracker - 1; j++) {
@@ -60,8 +59,11 @@ void Mutex_Unlock(Mutex* Mx) { //Releasing the Mutex
 		
 			Mx->waiting_tasks[Mx->TaskTracker - 1] = NULL;
 			Mx->owner = WinnerTask;
+			Mx->OriginalPriority = WinnerTask->priority;
 			Mx->TaskTracker--;
 			Mx->counter = 0;
+			
+			SCB->ICSR |= SCB_ICSR_PENDSVSET_Msk; //bit 28 of INTCTRL Register. Mask is 0x10000000 - This allows for a context switch
 	}
 		
 	else {

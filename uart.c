@@ -7,9 +7,9 @@
 static char printf_buffer[1023];
 
 void UART_Init(void) {
-	SYSCTL_RCGCUART_R |= 0x0001; // activate UART0 � 
-	SYSCTL_RCGCGPIO_R |= 0x0001; // activate port A � 
-	//UART0_CTL_R &= ~0x0001; // disable UART � 
+	SYSCTL_RCGCUART_R |= 0x0001; // activate UART0 
+	SYSCTL_RCGCGPIO_R |= 0x0001; // activate port A 
+	//UART0_CTL_R &= ~0x0001; // disable UART 
 
 	while((SYSCTL_PRUART_R&SYSCTL_PRUART_R0) == 0){};
 		
@@ -24,23 +24,23 @@ void UART_Init(void) {
   SYSCTL_ALTCLKCFG_R = (SYSCTL_ALTCLKCFG_R&~SYSCTL_ALTCLKCFG_ALTCLK_M)+SYSCTL_ALTCLKCFG_ALTCLK_PIOSC;
   UART0_CTL_R &= ~UART_CTL_HSE;         // high-speed disable; divide clock by 16 rather than 8 (default)
 
-	UART0_LCRH_R = 0x0070;		// 8-bit word length, enable FIFO � 
-	UART0_CTL_R = 0x0301;			// enable RXE, TXE and UART � 
-	GPIO_PORTA_PCTL_R = (GPIO_PORTA_PCTL_R&0xFFFFFF00)+0x00000011; // UART � 
-	GPIO_PORTA_AMSEL_R &= ~0x03;	// disable analog function on PA1-0 � 
-	GPIO_PORTA_AFSEL_R |= 0x03;		// enable alt funct on PA1-0 � 
+	UART0_LCRH_R = 0x0070;		// 8-bit word length, enable FIFO 
+	UART0_CTL_R = 0x0301;			// enable RXE, TXE and UART 
+	GPIO_PORTA_PCTL_R = (GPIO_PORTA_PCTL_R&0xFFFFFF00)+0x00000011; // UART 
+	GPIO_PORTA_AMSEL_R &= ~0x03;	// disable analog function on PA1-0 
+	GPIO_PORTA_AFSEL_R |= 0x03;		// enable alt funct on PA1-0 
 	GPIO_PORTA_DEN_R |= 0x03;			// enable digital I/O on PA1-0 
 }
 
 // Wait for new input, then return ASCII code 
-	char UART_InChar(void){
-		while((UART0_FR_R&0x0010) != 0);		// wait until RXFE is 0 � 
+	char UART_InChar(void) {
+		while((UART0_FR_R&0x0010) != 0);		// wait until RXFE is 0 
 		return((char)(UART0_DR_R&0xFF));
 	} 
 	
 	// Wait for buffer to be not full, then output 
 	void UART_OutChar(char data){
-		while((UART0_FR_R&0x0020) != 0);	// wait until TXFF is 0 � 
+		while((UART0_FR_R&0x0020) != 0);	// wait until TXFF is 0 
 		UART0_DR_R = data;
 	} 
 	void UART_printf(const char* array){
