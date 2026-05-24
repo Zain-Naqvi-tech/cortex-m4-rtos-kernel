@@ -55,6 +55,8 @@ void OS_Signal(Semaphore* smp) { //Waking
 		
 		smp->counter = 0; //Set the counter back to 0. 
 		
+		SCB->ICSR |= SCB_ICSR_PENDSVSET_Msk; //Context Switch
+		
 	}
 
 }

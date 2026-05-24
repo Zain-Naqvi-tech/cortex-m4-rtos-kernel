@@ -6,8 +6,10 @@
 #include "tasks.h"
 #include "uart.h"
 #include "Mutex.h"
+#include "Semaphore.h"
 
 Mutex Mx;
+Semaphore smp;
 
 void PortN_Init(void) {
 	
@@ -39,6 +41,7 @@ int main(void) {
 	PortF_Init(); //Initializes Port F
 	Init_OS(); //Zeros out the TCBs, and nulls the CurrentTask
 	Mutex_Init(&Mx);
+	OS_SemaphoreInit(&smp);
 	Create_Task(0,task1,1); //Populate the fake stack for task 1
 	Create_Task(1,task2,2); //Populate the fake stack for task 2
 	Create_Task(2,task3,3); //Populate the fake stack for task 3

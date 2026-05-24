@@ -21,6 +21,7 @@ void Init_OS(void) {
 		task_array[i].psp = NULL;
 		task_array[i].state = READY;
 		task_array[i].ticks = 0;
+		task_array[i].priority = 0;
 	}
 	CurrentTask = NULL;
 	
