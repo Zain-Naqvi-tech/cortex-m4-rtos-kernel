@@ -7,6 +7,7 @@
 #include "uart.h"
 #include "Mutex.h"
 #include "Semaphore.h"
+#include "os_malloc.h"
 
 Mutex Mx;
 Semaphore smp;
@@ -39,9 +40,10 @@ int main(void) {
 	UART_Init();
 	PortN_Init(); //Initializes Port N
 	PortF_Init(); //Initializes Port F
+	OS_HeapInit(); //Initialises the heap for malloc
 	Init_OS(); //Zeros out the TCBs, and nulls the CurrentTask
-	Mutex_Init(&Mx);
-	OS_SemaphoreInit(&smp);
+	Mutex_Init(&Mx); //Initialises the Mutex struct
+	OS_SemaphoreInit(&smp); //Initialises the semaphore struct
 	Create_Task(0,task1,1); //Populate the fake stack for task 1
 	Create_Task(1,task2,2); //Populate the fake stack for task 2
 	Create_Task(2,task3,3); //Populate the fake stack for task 3

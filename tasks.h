@@ -15,6 +15,8 @@ void task4(void); //Blinks LED4
 void ConsumerTask(void);
 void ProducerTask(void);
 
+void MallocTest(void);
+
 void idleTask(void); //Idle task with lowest priority
 
 #endif
