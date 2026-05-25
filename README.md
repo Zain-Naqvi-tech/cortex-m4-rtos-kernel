@@ -1,6 +1,6 @@
 # cortex-m4-rtos-kernel
 
-A bare-metal RTOS built from scratch on the ARM Cortex-M4 (TM4C1294NCPDT Launchpad). No HAL. No vendor RTOS libraries. Every line of kernel code was written and debugged by hand against the ARM architecture technical reference manual and the chip datasheet.
+A bare-metal RTOS built from scratch on the ARM Cortex-M4 (TM4C1294NCPDT Launchpad) (MSP432E401Y MCU). No HAL. No vendor RTOS libraries. Every line of kernel code was written and debugged by hand against the ARM architecture technical reference manual and the chip datasheet.
 
 ---
 
