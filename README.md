@@ -150,4 +150,4 @@ The next step after confirming functional correctness is to check system perform
 
 **Heap allocator timing** — 
 
-**Scheduler Overhead** — 
+**Scheduler Overhead** — How long does `OS_Schedule` take to run
