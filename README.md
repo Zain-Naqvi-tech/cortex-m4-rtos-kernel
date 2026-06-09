@@ -135,3 +135,19 @@ Clone the repo, open the Keil project file, build, and flash. UART trace output 
 **ITM/SWO trace** — The kernel instrumentation was designed around ARM ITM hardware trace with SWO output. During implementation it became clear that CMSIS-DAP does not support SWO — it only handles JTAG and SWD. The trace transport was pivoted to UART with the same 32-bit packet format. Lesson: verify hardware capabilities before building software around them.
 
 **struct padding** — `sizeof(Header)` was assumed to be 5 bytes (4 + 1). The actual value on this target is 8 bytes due to alignment. The heap exhaustion test initially predicted 113 allocations of 4 bytes; the actual figure was different. Always measure `sizeof()` rather than summing field sizes manually.
+
+---
+
+## Measuring System Performance
+
+The next step after confirming functional correctness is to check system performance. It will answer questions like 'how fast?' or 'how consistent?'
+
+**Context Switch Latency** — 
+
+**SysTick Jitter** — Answers 'how consistent is the 1ms tick?'
+
+**OS_Sleep(ticks) Accuracy** — 
+
+**Heap allocator timing** — 
+
+**Scheduler Overhead** — 
