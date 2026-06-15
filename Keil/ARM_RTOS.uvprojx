@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define></Define>
               <Undefine></Undefine>
-              <IncludePath></IncludePath>
+              <IncludePath>..\App;..\Kernel;..\Drivers;..\Device</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -382,97 +382,67 @@
       </TargetOption>
       <Groups>
         <Group>
-          <GroupName>Source Group 1</GroupName>
+          <GroupName>App</GroupName>
           <Files>
-            <File>
-              <FileName>PLL.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\PLL.c</FilePath>
-            </File>
-            <File>
-              <FileName>SysTick.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\SysTick.c</FilePath>
-            </File>
             <File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\main.c</FilePath>
-            </File>
-            <File>
-              <FileName>os_core.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\os_core.c</FilePath>
-            </File>
-            <File>
-              <FileName>os_asm.s</FileName>
-              <FileType>2</FileType>
-              <FilePath>.\os_asm.s</FilePath>
-            </File>
-            <File>
-              <FileName>tm4c1294ncpdt.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\tm4c1294ncpdt.h</FilePath>
+              <FilePath>..\App\main.c</FilePath>
             </File>
             <File>
               <FileName>tasks.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\tasks.c</FilePath>
+              <FilePath>..\App\tasks.c</FilePath>
             </File>
-            <File>
-              <FileName>tasks.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\tasks.h</FilePath>
-            </File>
-            <File>
-              <FileName>Semaphore.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Semaphore.h</FilePath>
-            </File>
-            <File>
-              <FileName>Mutex.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Mutex.h</FilePath>
-            </File>
-            <File>
-              <FileName>Semaphore.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Semaphore.c</FilePath>
-            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Kernel</GroupName>
+          <Files>
             <File>
               <FileName>Mutex.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\Mutex.c</FilePath>
+              <FilePath>..\Kernel\Mutex.c</FilePath>
             </File>
             <File>
-              <FileName>os_malloc.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\os_malloc.h</FilePath>
-            </File>
-            <File>
-              <FileName>os_malloc.c</FileName>
+              <FileName>os_core.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\os_malloc.c</FilePath>
-            </File>
-            <File>
-              <FileName>os_error.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\os_error.h</FilePath>
+              <FilePath>..\Kernel\os_core.c</FilePath>
             </File>
             <File>
               <FileName>os_error.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\os_error.c</FilePath>
+              <FilePath>..\Kernel\os_error.c</FilePath>
             </File>
             <File>
-              <FileName>uart.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\uart.h</FilePath>
+              <FileName>os_malloc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Kernel\os_malloc.c</FilePath>
+            </File>
+            <File>
+              <FileName>Semaphore.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Kernel\Semaphore.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Drivers</GroupName>
+          <Files>
+            <File>
+              <FileName>PLL.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\PLL.c</FilePath>
+            </File>
+            <File>
+              <FileName>SysTick.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\SysTick.c</FilePath>
             </File>
             <File>
               <FileName>uart.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\uart.c</FilePath>
+              <FilePath>..\Drivers\uart.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -521,5 +491,14 @@
       </file>
     </files>
   </RTE>
+
+  <LayerInfo>
+    <Layers>
+      <Layer>
+        <LayName>ARM_RTOS</LayName>
+        <LayPrjMark>1</LayPrjMark>
+      </Layer>
+    </Layers>
+  </LayerInfo>
 
 </Project>
