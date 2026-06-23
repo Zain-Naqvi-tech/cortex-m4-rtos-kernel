@@ -24,25 +24,25 @@ The result is a working preemptive kernel running on real hardware, with four ta
 
 ## Kernel features
 
-**Context switching** — SysTick fires every 1ms and pends PendSV. The PendSV handler, written in ARM assembly, saves R4–R11 to the current task's Process Stack Pointer, calls the C scheduler, then restores R4–R11 from the next task's stack. The hardware automatically handles R0–R3, R12, LR, PC, and xPSR on exception entry and exit. The kernel runs on the Main Stack Pointer; every task runs on its own isolated Process Stack Pointer.
+**Context switching**: SysTick fires every 1ms and pends PendSV. The PendSV handler, written in ARM assembly, saves R4–R11 to the current task's Process Stack Pointer, calls the C scheduler, then restores R4–R11 from the next task's stack. The hardware automatically handles R0–R3, R12, LR, PC, and xPSR on exception entry and exit. The kernel runs on the Main Stack Pointer; every task runs on its own isolated Process Stack Pointer.
 
-**Priority scheduling** — Each TCB carries a priority field. The scheduler scans all READY tasks and selects the highest priority one. Equal-priority tasks share the CPU in round-robin order by scanning forward from the current task index.
+**Priority scheduling**: Each TCB carries a priority field. The scheduler scans all READY tasks and selects the highest priority one. Equal-priority tasks share the CPU in round-robin order by scanning forward from the current task index.
 
-**Binary semaphores** — Counter-based, with a priority-ordered wait queue. `OS_Wait()` blocks and context-switches immediately if the semaphore is unavailable. `OS_Signal()` wakes the highest-priority waiting task and triggers a reschedule.
+**Binary semaphores**: Counter-based, with a priority-ordered wait queue. `OS_Wait()` blocks and context-switches immediately if the semaphore is unavailable. `OS_Signal()` wakes the highest-priority waiting task and triggers a reschedule.
 
-**Mutexes with priority inheritance** — Ownership-tracked. When a high-priority task blocks on a mutex held by a lower-priority task, the owner's priority is temporarily elevated to the blocker's level. This prevents a medium-priority task from indefinitely starving both. Priority is restored on unlock, and ownership transfers directly to the next task waiting.
+**Mutexes with priority inheritance**: Ownership-tracked. When a high-priority task blocks on a mutex held by a lower-priority task, the owner's priority is temporarily elevated to the blocker's level. This prevents a medium-priority task from indefinitely starving both. Priority is restored on unlock, and ownership transfers directly to the next task waiting.
 
-**Heap allocator** — First-fit, with block splitting. The heap is a 1024 Byte static array. Each allocation carves a block and leaves a correctly-sized free block for the remainder. `os_free()` marks the block header as available. `sizeof(Header)` is 8 bytes on this target due to struct alignment —> verified against actual allocation addresses in the debugger.
+**Heap allocator**: First-fit, with block splitting. The heap is a 1024 Byte static array. Each allocation carves a block and leaves a correctly-sized free block for the remainder. `os_free()` marks the block header as available. `sizeof(Header)` is 8 bytes on this target due to struct alignment —> verified against actual allocation addresses in the debugger.
 
-**Stack overflow detection** — `Create_Task()` writes `0xDEADBEEF` to `tcb_array[0]`, the lowest address in each task's stack. `SysTick_Handler` checks all task canaries every millisecond. A corrupted canary calls `OS_Fault()` immediately.
+**Stack overflow detection**: `Create_Task()` writes `0xDEADBEEF` to `tcb_array[0]`, the lowest address in each task's stack. `SysTick_Handler` checks all task canaries every millisecond. A corrupted canary calls `OS_Fault()` immediately.
 
-**OS_Fault** — Disables all interrupts, takes direct control of an LED, and blinks it in a tight infinite loop. The system halts. 
+**OS_Fault**: Disables all interrupts, takes direct control of an LED, and blinks it in a tight infinite loop. The system halts. 
 
-**OS_Sleep** — `OS_Sleep(N)` stores N in the TCB's tick counter, marks the task BLOCKED, and triggers an immediate context switch. `SysTick_Handler` decrements all BLOCKED tasks with non-zero tick counts each millisecond, marking them READY when the counter reaches zero. Zero busy-waiting.
+**OS_Sleep**: `OS_Sleep(N)` stores N in the TCB's tick counter, marks the task BLOCKED, and triggers an immediate context switch. `SysTick_Handler` decrements all BLOCKED tasks with non-zero tick counts each millisecond, marking them READY when the counter reaches zero. Zero busy-waiting.
 
-**Idle task** — automatically created at the lowest priority (0) in `Init_OS()`. Guarantees the scheduler always has a valid READY task to select when every user task is sleeping or blocked. It is a simple while (1) loop.
+**Idle task**: automatically created at the lowest priority (0) in `Init_OS()`. Guarantees the scheduler always has a valid READY task to select when every user task is sleeping or blocked. It is a simple while (1) loop.
 
-**UART trace** — kernel hooks emit 32-bit packets over UART on every context switch, semaphore wait/signal, mutex lock/unlock, and malloc/free. Packet format: `[31:24] event type | [23:16] task index | [15:0] OS tick counter`.
+**UART trace**: kernel hooks emit 32-bit packets over UART on every context switch, semaphore wait/signal, mutex lock/unlock, and malloc/free. Packet format: `[31:24] event type | [23:16] task index | [15:0] OS tick counter`.
 
 ---
 
@@ -128,13 +128,13 @@ Clone the repo, open the Keil project file, build, and flash. UART trace output 
 
 ## Engineering notes
 
-**The CONTROL register and SVC** — The initial approach switched to PSP mode before triggering SVC. This caused the CPU to push the exception frame onto the newly-forged task stack, corrupting the fake PC value and jumping to garbage. Fix: remain on MSP through SVC. The CPU dumps the exception frame onto the main stack safely, and EXC_RETURN switches to PSP cleanly.
+**The CONTROL register and SVC**: The initial approach switched to PSP mode before triggering SVC. This caused the CPU to push the exception frame onto the newly-forged task stack, corrupting the fake PC value and jumping to garbage. Fix: remain on MSP through SVC. The CPU dumps the exception frame onto the main stack safely, and EXC_RETURN switches to PSP cleanly.
 
-**PendSV ordering** — During mutex stress testing, `OS_Fault` fired when a task called `Mutex_Unlock` on a mutex it didn't own. Root cause: `SCB->ICSR |= PENDSVSET` was written before `Mx->owner = WinnerTask`. The context switch fired between those two lines, waking the winner before ownership transferred. Rule: trigger context switches only after all data structures are fully consistent.
+**PendSV ordering**: During mutex stress testing, `OS_Fault` fired when a task called `Mutex_Unlock` on a mutex it didn't own. Root cause: `SCB->ICSR |= PENDSVSET` was written before `Mx->owner = WinnerTask`. The context switch fired between those two lines, waking the winner before ownership transferred. Rule: trigger context switches only after all data structures are fully consistent.
 
-**ITM/SWO trace** — The kernel instrumentation was designed around ARM ITM hardware trace with SWO output. During implementation it became clear that CMSIS-DAP does not support SWO — it only handles JTAG and SWD. The trace transport was pivoted to UART with the same 32-bit packet format. Lesson: verify hardware capabilities before building software around them.
+**ITM/SWO trace**: The kernel instrumentation was designed around ARM ITM hardware trace with SWO output. During implementation it became clear that CMSIS-DAP does not support SWO, it only handles JTAG and SWD. The trace transport was pivoted to UART with the same 32-bit packet format. Lesson: verify hardware capabilities before building software around them.
 
-**struct padding** — `sizeof(Header)` was assumed to be 5 bytes (4 + 1). The actual value on this target is 8 bytes due to alignment. The heap exhaustion test initially predicted 113 allocations of 4 bytes; the actual figure was different. Always measure `sizeof()` rather than summing field sizes manually.
+**struct padding**: `sizeof(Header)` was assumed to be 5 bytes (4 + 1). The actual value on this target is 8 bytes due to alignment. The heap exhaustion test initially predicted 113 allocations of 4 bytes; the actual figure was different. Always measure `sizeof()` rather than summing field sizes manually.
 
 ---
 
@@ -142,12 +142,12 @@ Clone the repo, open the Keil project file, build, and flash. UART trace output 
 
 The next step after confirming functional correctness is to check system performance. It will answer questions like 'how fast?' or 'how consistent?'
 
-**Context Switch Latency** — 
+**Context Switch Latency**:
 
-**SysTick Jitter** — Answers 'how consistent is the 1ms tick?'
+**SysTick Jitter**: Answers 'how consistent is the 1ms tick?'
 
-**OS_Sleep(ticks) Accuracy** — 
+**OS_Sleep(ticks) Accuracy**:
 
-**Heap allocator timing** — 
+**Heap allocator timing**: 
 
-**Scheduler Overhead** — How long does `OS_Schedule` take to run
+**Scheduler Overhead**: How long does `OS_Schedule` take to run
