@@ -8,6 +8,7 @@
 #include "Mutex.h"
 #include "Semaphore.h"
 #include "os_malloc.h"
+#include "dwt.h"
 
 Mutex Mx;
 Semaphore smp;
@@ -19,7 +20,7 @@ void PortN_Init(void) {
 	
 	GPIO_PORTN_DIR_R |= 0x03; //Enables the first and second bits to be outputs
 	GPIO_PORTN_DEN_R |= 0x03; //Enables Digital I/O on Port N
-		
+	
 	return; 
 
 }
@@ -37,6 +38,7 @@ void PortF_Init(void) {
 int main(void) {
 
 	PLL_Init(); //Sets the clock speed at 120MHz
+	DWT_Init(); //Initializes the DWT CYCCNT Counter
 	UART_Init();
 	PortN_Init(); //Initializes Port N
 	PortF_Init(); //Initializes Port F

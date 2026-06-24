@@ -130,7 +130,7 @@ void OS_Schedule (void) {
 	CurrentTask = &task_array[indexTracker]; //CurentTask now points to the next task in line
 	CurrentTask->state = RUNNING;
 	
-	UART_Trace(UART_PACKET(EVT_TASK_SWITCH, indexTracker, OS_Ticks));
+	//UART_Trace(UART_PACKET(EVT_TASK_SWITCH, indexTracker, OS_Ticks));
 
 }
 

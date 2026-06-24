@@ -147,6 +147,10 @@ The next step after confirming functional correctness is to check system perform
 **SysTick Jitter**: Answers 'how consistent is the 1ms tick?'
 
 **OS_Sleep(ticks) Accuracy**:
+- Added a DWT CYCCNT Counter to check the time elapsed between sleep cycles for a task
+- A reading was taken before `OS_SLEEP()` is called and a reading is taken right after
+- The delta is calculated after which it is printed, using a new added function `UART_numeric-print()`. 
+- It comes out to be 59998103 CPU cycles which is (59998103 cycles) / (120M cycles/second) = 499.984ms. This is really close to the desired value of 500ms. 
 
 **Heap allocator timing**: 
 

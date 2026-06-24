@@ -22,6 +22,7 @@ char UART_InChar(void);
 void UART_OutChar(char data);
 void UART_printf(const char* array);
 void Status_Check(char* array, int status);
+void UART_numeric_print(uint32_t num);
 
 void UART_Trace(uint32_t Packet);
 

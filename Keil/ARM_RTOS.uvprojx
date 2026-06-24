@@ -424,6 +424,11 @@
               <FileType>1</FileType>
               <FilePath>..\Kernel\Semaphore.c</FilePath>
             </File>
+            <File>
+              <FileName>os_asm.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>..\Kernel\os_asm.s</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -443,6 +448,11 @@
               <FileName>uart.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Drivers\uart.c</FilePath>
+            </File>
+            <File>
+              <FileName>dwt.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\dwt.c</FilePath>
             </File>
           </Files>
         </Group>

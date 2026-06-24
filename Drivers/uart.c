@@ -51,6 +51,11 @@ void UART_Init(void) {
 		}
 	}
 	
+	void UART_numeric_print(uint32_t num) {
+		sprintf(printf_buffer, "%d\r\n", num);
+		UART_printf(printf_buffer);
+	}
+	
 	void Status_Check(char* array, int status){
 			if (status != 0){
 				UART_printf(array);
@@ -78,5 +83,3 @@ void UART_Trace(uint32_t Packet) {
     UART_OutChar((char)(timestamp & 0xFF)); //Send the lower byte of the timestamp
 
 }
-
-	

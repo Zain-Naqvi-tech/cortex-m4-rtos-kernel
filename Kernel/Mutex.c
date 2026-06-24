@@ -14,12 +14,12 @@ void Mutex_Lock(Mutex* Mx) { //Taking the Mutex
 		Mx->owner = CurrentTask; //Set the owner to the current task. 
 		Mx->OriginalPriority = CurrentTask->priority; //We save the priority once it takes the mutex
 		Mx->counter--;
-		UART_Trace(UART_PACKET(EVT_MUTEX_LOCK, CurrentTask - task_array, OS_Ticks));
+		//UART_Trace(UART_PACKET(EVT_MUTEX_LOCK, CurrentTask - task_array, OS_Ticks));
 	}
 	else {
 		if (CurrentTask->priority > Mx->owner->priority) {Mx->owner->priority = CurrentTask->priority;} //Elevate the owner if it has a lower priority
 		CurrentTask->state = BLOCKED;
-		UART_Trace(UART_PACKET(EVT_MUTEX_LOCK, CurrentTask - task_array, OS_Ticks));
+		//UART_Trace(UART_PACKET(EVT_MUTEX_LOCK, CurrentTask - task_array, OS_Ticks));
 		Mx->waiting_tasks[Mx->TaskTracker] = CurrentTask;
 		Mx->TaskTracker++;
 		SCB->ICSR |= SCB_ICSR_PENDSVSET_Msk; //bit 28 of INTCTRL Register. Mask is 0x10000000 - This allows for a context switch immediately after the block
@@ -50,7 +50,7 @@ void Mutex_Unlock(Mutex* Mx) { //Releasing the Mutex
 		
 			TCB* WinnerTask = Mx->waiting_tasks[MaxPIndex];
 			WinnerTask->state = READY; //Wake the task at the index which had the highest priority task
-			UART_Trace(UART_PACKET(EVT_MUTEX_UNLOCK, CurrentTask - task_array, OS_Ticks));
+			//UART_Trace(UART_PACKET(EVT_MUTEX_UNLOCK, CurrentTask - task_array, OS_Ticks));
 		
 			//Fill the hole
 			for (int j = MaxPIndex; j < Mx->TaskTracker - 1; j++) {
@@ -69,7 +69,7 @@ void Mutex_Unlock(Mutex* Mx) { //Releasing the Mutex
 	else {
 		Mx->counter = 1;
 		Mx->owner = NULL;
-		UART_Trace(UART_PACKET(EVT_MUTEX_UNLOCK, CurrentTask - task_array, OS_Ticks));
+		//UART_Trace(UART_PACKET(EVT_MUTEX_UNLOCK, CurrentTask - task_array, OS_Ticks));
 	}
 		
 	}
