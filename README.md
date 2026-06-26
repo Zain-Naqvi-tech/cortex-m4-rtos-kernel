@@ -153,9 +153,15 @@ The next step after confirming functional correctness is to check system perform
 - It comes out to be 59998103 CPU cycles which is (59998103 cycles) / (120M cycles/second) = 499.984ms. This is really close to the desired value of 500ms. 
 
 **Heap allocator timing**: 
+- Added a DWT CYCCNT counter before and after the os_malloc() call. 
+- The result comes out to be 119 cycles which is 0.9917us based on our Clock Speed of 120MHz. 
+---
+- Then, the same canbe done on the os_free() function. 
+- The result comes out to be 
 
 **Scheduler Overhead**: How long does `OS_Schedule` take to run
 - Added a DWT CYCCNT counter to check the time is takes for `OS_Schedule()` to run. 
 - A reading was taken at the start, and the final reading was taken at the end, right after the task state is set to READY.
 - A global delta variable was used to find/track the time difference and printing it using the `UART_numeric_print()` function in any one of the tasks in tasks.c
 - The result was 394 cycles, which comes out to be 3.2833us. 
+- Based on research, this should take anything between 100 and 300 cpu clock cycles per scheduling event. 
