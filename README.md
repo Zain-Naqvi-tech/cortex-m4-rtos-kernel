@@ -155,3 +155,7 @@ The next step after confirming functional correctness is to check system perform
 **Heap allocator timing**: 
 
 **Scheduler Overhead**: How long does `OS_Schedule` take to run
+- Added a DWT CYCCNT counter to check the time is takes for `OS_Schedule()` to run. 
+- A reading was taken at the start, and the final reading was taken at the end, right after the task state is set to READY.
+- A global delta variable was used to find/track the time difference and printing it using the `UART_numeric_print()` function in any one of the tasks in tasks.c
+- The result was 394 cycles, which comes out to be 3.2833us. 
