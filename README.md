@@ -144,8 +144,6 @@ The next step after confirming functional correctness is to check system perform
 
 **Context Switch Latency**:
 
-**SysTick Jitter**: Answers 'how consistent is the 1ms tick?'
-
 **OS_Sleep(ticks) Accuracy**:
 - Added a DWT CYCCNT Counter to check the time elapsed between sleep cycles for a task
 - A reading was taken before `OS_SLEEP()` is called and a reading is taken right after
@@ -155,6 +153,8 @@ The next step after confirming functional correctness is to check system perform
 **Heap allocator timing**: 
 - Added a DWT CYCCNT counter before and after the os_malloc() call. 
 - The result comes out to be 119 cycles which is 0.9917us based on our Clock Speed of 120MHz. 
+- Now, we can work with the other part of heap allocation, where not every block is free. This should take more cycles as we need to traverse through the heap. 
+- The result comes out to be cycle values ranging from 120 to 787 (our one time heap allocation also shows 119). The increment between each cycle reading is approximately 40 cycles. This shows that the os_malloc() function runs on the expected O(n). 
 ---
 - Then, the same canbe done on the os_free() function. 
 - The result comes out to be 39 cycles which is 0.325us. 
