@@ -157,7 +157,7 @@ The next step after confirming functional correctness is to check system perform
 - The result comes out to be 119 cycles which is 0.9917us based on our Clock Speed of 120MHz. 
 ---
 - Then, the same canbe done on the os_free() function. 
-- The result comes out to be 
+- The result comes out to be 39 cycles which is 0.325us. 
 
 **Scheduler Overhead**: How long does `OS_Schedule` take to run
 - Added a DWT CYCCNT counter to check the time is takes for `OS_Schedule()` to run. 

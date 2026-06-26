@@ -5,16 +5,16 @@
 #include "uart.h"
 void MallocTest(void) {
    
-		uint32_t T0 = DWT->CYCCNT;
     uint32_t* arr = (uint32_t*)os_malloc(5 * sizeof(uint32_t)); //Allocating memory for 5 uint32_t integers
-		uint32_t T1 = DWT->CYCCNT;
-		uint32_t delta = T1 - T0;
-		UART_numeric_print(delta);
     if (arr == NULL) { OS_Fault(); }
     arr[0] = 4;
     if (arr[0] == 4) { GPIO_PORTN_DATA_R ^= 0x01; } //led 2
    
+		uint32_t T0 = DWT->CYCCNT;
     os_free(arr);
+		uint32_t T1 = DWT->CYCCNT;
+		uint32_t delta = T1 - T0;
+		UART_numeric_print(delta);
    
     uint32_t* array = (uint32_t*)os_malloc(5 * sizeof(uint32_t));
    
