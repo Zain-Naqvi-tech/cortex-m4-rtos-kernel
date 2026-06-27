@@ -6,6 +6,7 @@
 
 extern Mutex Mx;
 extern Semaphore smp;
+extern volatile uint32_t delta;
 
 void task1(void); //Blinks LED1
 void task2(void); //Blinks LED2

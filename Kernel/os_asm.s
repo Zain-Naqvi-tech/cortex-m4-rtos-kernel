@@ -7,6 +7,8 @@
 		
 	IMPORT CurrentTask
 	IMPORT OS_Schedule
+	IMPORT pendSV0
+	IMPORT pendSV1
 
 ;Load LR with 0xFFFFFFFD (EXC_RETURN value)
 	EXPORT SVC_Handler ;used by the linker so it can be used by other files
@@ -18,6 +20,11 @@ SVC_Handler
 PendSV_Handler
 
 	CPSID i ; Disable Interrupts
+	
+	LDR R2, =0xE0001004 ; reads the address of the DWT CYCCNT Counter to find the current cycle count
+	LDR R3, [R2] ; dereferences R2's value and puts it into a temp register
+	LDR R2, =pendSV0 ; overwrites R2's address with the global C variable pendSV0
+	STR R3, [R2] ; stores the R3 value (current count) into R2, our pendSV0 variable
 	
 	MRS R0, PSP ; moves the PSP into a general-purpose register
 	
@@ -39,6 +46,11 @@ PendSV_Handler
 	
 	LDMIA R0!, {R4-R11} ; Pops R4-R11 off the next task's stack
 	MSR PSP, R0 ; write the updated stack pointer back into the PSP register
+	
+	LDR R2, =0xE0001004 ; reads the address of the DWT CYCCNT Counter to find the current cycle count
+	LDR R3, [R2] ; dereferences R2's value and puts it into a temp register
+	LDR R2, =pendSV1 ; overwrites R2's address with the global C variable pendSV1
+	STR R3, [R2] ; stores the R3 value (current count) into R2, our pendSV1 variable
 	
 	CPSIE i ; Enable Interrupts
 	BX LR ; Triggers EXC_RETURN, jumps to the new task's PC. 

@@ -143,6 +143,10 @@ Clone the repo, open the Keil project file, build, and flash. UART trace output 
 The next step after confirming functional correctness is to check system performance. It will answer questions like 'how fast?' or 'how consistent?'
 
 **Context Switch Latency**:
+- For this, we needed to work in the os_asm.s file. The physical address of the DWT CYCCNT counter was stored in a temp register, its value extracted into another register, and then that value placed into the address of the C variable pendSV0/pendSV1. The timings were taken right at the start of `PendSV_Handler` and then right before branching out. 
+- The two global C variables were then passed to the `UART_numeric_print(uint32_t num)` function as `pendSV1 - pendSV0`
+- The UART output shows 479 cycles which comes out to be approximately 3.9916us. 
+- Another thing to note here is that these cycles also include the cycles of `OS_Schedule()`. This is because the OS_Schedule function is called in pendSV Handler. It takes up 394 cycles. The remaining 85 cycles we caught for the context switch comes from saving and restoring the R4-R11 register values, and working on the PSP. 
 
 **OS_Sleep(ticks) Accuracy**:
 - Added a DWT CYCCNT Counter to check the time elapsed between sleep cycles for a task

@@ -46,7 +46,7 @@ int main(void) {
 	Init_OS(); //Zeros out the TCBs, and nulls the CurrentTask
 	Mutex_Init(&Mx); //Initialises the Mutex struct
 	OS_SemaphoreInit(&smp); //Initialises the semaphore struct
-	Create_Task(0,MallocTest,1); //Populate the fake stack for task 1
+	Create_Task(0,task1,1); //Populate the fake stack for task 1
 	Create_Task(1,task2,2); //Populate the fake stack for task 2
 	Create_Task(2,task3,3); //Populate the fake stack for task 3
 	Create_Task(3,task4,4); //Populate the fake stack for task 4
