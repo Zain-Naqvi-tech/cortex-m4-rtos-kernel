@@ -160,7 +160,7 @@ The next step after confirming functional correctness is to check system perform
 - Now, we can work with the other part of heap allocation, where not every block is free. This should take more cycles as we need to traverse through the heap. 
 - The result comes out to be cycle values ranging from 120 to 787 (our one time heap allocation also shows 119). The increment between each cycle reading is approximately 40 cycles. This shows that the os_malloc() function runs on the expected O(n). 
 ---
-- Then, the same canbe done on the os_free() function. 
+- Then, the same can be done on the os_free() function. 
 - The result comes out to be 39 cycles which is 0.325us. 
 
 **Scheduler Overhead**: How long does `OS_Schedule` take to run
